@@ -1,0 +1,8 @@
+//
+// Created by Home on 14/10/2018.
+//
+
+#ifndef RAYTRACING_SCENEREADER_H
+#define RAYTRACING_SCENEREADER_H
+
+#endif //RAYTRACING_SCENEREADER_H

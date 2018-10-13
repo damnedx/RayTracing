@@ -1,0 +1,8 @@
+//
+// Created by Home on 14/10/2018.
+//
+
+#ifndef RAYTRACING_IMAGEWRITER_H
+#define RAYTRACING_IMAGEWRITER_H
+
+#endif //RAYTRACING_IMAGEWRITER_H

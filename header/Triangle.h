@@ -1,0 +1,8 @@
+//
+// Created by Home on 14/10/2018.
+//
+
+#ifndef RAYTRACING_TRIANGLE_H
+#define RAYTRACING_TRIANGLE_H
+
+#endif //RAYTRACING_TRIANGLE_H
