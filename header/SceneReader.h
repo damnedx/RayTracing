@@ -7,7 +7,22 @@
 
 #include <iostream>
 #include <fstream>
+#include <vector>
+
 using namespace std;
+// C++ template to print vector container elements
+template <typename T>
+inline ostream& operator<<(ostream& os, const vector<T>& v)
+{
+    os << "[ ";
+    for (int i = 0; i < v.size(); ++i) {
+        os << v[i];
+        if (i != v.size() - 1)
+            os << ", " << endl;
+    }
+    os << " ]\n";
+    return os;
+}
 
 class SceneReader {
 private:

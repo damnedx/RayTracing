@@ -20,7 +20,7 @@ public:
     };
     ~Material() = default;
     inline friend ostream& operator<<(ostream& os, const Material& m){
-        os << "Materiel : (R,G,B) = (" << m.r << "," << m.g << "," << m.b << ") Reflection : " << m.reflection;
+        os << "Material : (R,G,B) = (" << m.r << "," << m.g << "," << m.b << ") Reflection : " << m.reflection;
         return os;
     }
 

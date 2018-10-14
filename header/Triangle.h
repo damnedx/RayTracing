@@ -19,7 +19,7 @@ public:
     ~Triangle() = default;
 
     inline friend std::ostream& operator<<(std::ostream& os, const Triangle& t){
-        os << t.A << "," << t.B << "," << t.C ;
+        os << "(Triangle) : " << t.A << "," << t.B << "," << t.C ;
         return os;
     }
 };

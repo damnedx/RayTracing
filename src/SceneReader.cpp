@@ -11,22 +11,10 @@
 #include "../header/Triangle.h"
 #include "../header/Point.h"
 
-// C++ template to print vector container elements
-template <typename T>
-ostream& operator<<(ostream& os, const vector<T>& v)
-{
-    os << "[ ";
-    for (int i = 0; i < v.size(); ++i) {
-        os << v[i];
-        if (i != v.size() - 1)
-            os << ", " << endl;
-    }
-    os << " ]\n";
-    return os;
-}
 
 SceneReader::SceneReader(string filename) {
 
+    Logger::InfoMessage("Reading scene file...");
     ifstream fileScene(filename);
     if (!fileScene){
         Logger::ErrorMessage("No file scene found !");
@@ -44,6 +32,8 @@ SceneReader::SceneReader(string filename) {
         fileScene >> r  >> g >> b >> reflection;
         allMaterials.emplace_back(Material(r,g,b,reflection));
     }
+
+    Logger::InfoMessage(to_string(this->_materialSize) + " material(s) loaded");
 
     vector<Triangle> allTriangles;
     // triangles load
@@ -68,12 +58,13 @@ SceneReader::SceneReader(string filename) {
                         materialId));
 
     }
+    Logger::InfoMessage(to_string(this->_triangleSize) + " triangle(s) loaded");
 
     cout << allMaterials << endl;
     cout << allTriangles << endl;
 
 
-
+    Logger::InfoMessage("Scene data loaded!");
 
 
     fileScene.close();
