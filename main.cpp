@@ -1,6 +1,8 @@
 #include <iostream>
+#include "header/SceneReader.h"
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+    SceneReader sc("../data/scene");
+
     return 0;
 }
