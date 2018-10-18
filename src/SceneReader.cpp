@@ -10,7 +10,7 @@
 #include "../header/Material.h"
 #include "../header/Triangle.h"
 #include "../header/Point.h"
-
+#include "../header/Vector.h"
 
 SceneReader::SceneReader(string filename) {
 
@@ -66,8 +66,12 @@ SceneReader::SceneReader(string filename) {
 
     Logger::InfoMessage("Scene data loaded!");
 
-
     fileScene.close();
+
+    Vector<int> v(1,6,3);
+
+    cout << v*v << endl;
+
 }
 
 
