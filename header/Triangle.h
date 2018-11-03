@@ -15,7 +15,7 @@ private:
 public:
     Point p1, p2, p3;
 
-    Triangle(Point A, Point B, Point C, unsigned int materialId);
+    Triangle(const Point& A, const Point& B, const Point& C, unsigned int materialId);
     ~Triangle() = default;
 
     inline friend std::ostream& operator<<(std::ostream& os, const Triangle& t){

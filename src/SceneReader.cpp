@@ -11,6 +11,7 @@
 #include "../header/Triangle.h"
 #include "../header/Point.h"
 #include "../header/Vector.h"
+#include "../header/Ray.h"
 
 SceneReader::SceneReader(string filename) {
 
@@ -22,7 +23,7 @@ SceneReader::SceneReader(string filename) {
     }
 
     // read size
-    fileScene >> this->_width >> this->_height;
+    fileScene >> this->width >> this->height;
     fileScene >> this->_materialSize >> this->_triangleSize;
 
     vector<Material> allMaterials;
@@ -63,10 +64,9 @@ SceneReader::SceneReader(string filename) {
     cout << allMaterials << endl;
     cout << allTriangles << endl;
 
-
     Logger::InfoMessage("Scene data loaded!");
-
     fileScene.close();
+
 }
 
 

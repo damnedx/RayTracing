@@ -4,11 +4,11 @@
 
 #include "../header/Triangle.h"
 
-Triangle::Triangle(Point A, Point B, Point C, unsigned int materialId) {
+Triangle::Triangle(const Point& A, const Point& B, const Point& C, unsigned int materialId) {
 
-    this->A = A;
-    this->B = B;
-    this->C = C;
+    this->p1 = A;
+    this->p2 = B;
+    this->p3 = C;
 
     this->_materialId = materialId;
 }

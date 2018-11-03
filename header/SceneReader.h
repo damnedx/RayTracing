@@ -26,13 +26,14 @@ inline ostream& operator<<(ostream& os, const vector<T>& v)
 
 class SceneReader {
 private:
-    unsigned int _height;
-    unsigned int _width;
     unsigned int _materialSize;
     unsigned int _triangleSize;
 
 
 public:
+    unsigned int height;
+    unsigned int width;
+
     SceneReader() = default;
     SceneReader(string filename);
     ~SceneReader() = default;
