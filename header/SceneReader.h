@@ -8,7 +8,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-
+#include "Triangle.h"
 using namespace std;
 // C++ template to print vector container elements
 template <typename T>
@@ -31,8 +31,9 @@ private:
 
 
 public:
-    unsigned int height;
-    unsigned int width;
+    int height;
+    int width;
+    vector<Triangle> allTriangles;
 
     SceneReader() = default;
     SceneReader(string filename);

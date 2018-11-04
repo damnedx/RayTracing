@@ -36,7 +36,6 @@ SceneReader::SceneReader(string filename) {
 
     Logger::InfoMessage(to_string(this->_materialSize) + " material(s) loaded");
 
-    vector<Triangle> allTriangles;
     // triangles load
     for(auto i = 0; i < this->_triangleSize; i++){
 
@@ -51,7 +50,7 @@ SceneReader::SceneReader(string filename) {
             Logger::ErrorMessage("Material not found for triangle : " + to_string(i));
             exit(1);
         }
-        allTriangles.emplace_back(
+        this->allTriangles.emplace_back(
                 Triangle(
                         Point(xA, yA, zA),
                         Point(xB, yB, zB),

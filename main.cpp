@@ -20,12 +20,16 @@ int main() {
     for(int i = 0; i < sc.height; i++){
         for(int j = 0; j < sc.width; j++){
             Vector<float> dir(j - sc.width/2, i - sc.height/2, - sc.width/(2*tan(fov/2)));
-            Ray r(origin, dir);
 
-            image[(j * sc.width + i) * 3 + 1] = 0;
-            image[(j * sc.width + i) * 3 + 2] = 0;
-            image[(j * sc.width + i) * 3 + 3] = 0;
+            float norm = sqrt(dir.vx * dir.vx + dir.vy * dir.vy + dir.vz * dir.vz);
+            Vector<float> dirNorm(dir.vx / norm, dir.vy / norm, dir.vz / norm);
+            Ray r(origin, dirNorm);
 
+            bool intersection = r.intersectTriangle(sc.allTriangles[0]);
+
+            image[(i * sc.width + j) * 3 + 1] = intersection ? 255 : 0;
+            image[(i * sc.width + j) * 3 + 0] = intersection ? 255 : 0;
+            image[(i * sc.width + j) * 3 + 2] = intersection ? 255 : 0;
         }
     }
     ImageWriter::saveImage("test.ppm", image, sc.width, sc.height);

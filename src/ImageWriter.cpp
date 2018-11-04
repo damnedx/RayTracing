@@ -17,9 +17,9 @@ void ImageWriter::saveImage(string filename, int image[], int width, int height)
 
     for(int i = 0; i < height; i++){
         for(int j = 0; j < width; j++){
-            f << image[(j * width + i) * 3 + 1]  << " ";
-            f << image[(j * width + i) * 3 + 2]  << " ";
-            f << image[(j * width + i) * 3 + 3]  << "\r\n";
+            f << image[(i * width + j) * 3 + 0]  << " ";
+            f << image[(i * width + j) * 3 + 1]  << " ";
+            f << image[(i * width + j) * 3 + 2]  << "\r\n";
         }
     }
 
