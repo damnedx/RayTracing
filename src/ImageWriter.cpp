@@ -12,7 +12,7 @@ void ImageWriter::saveImage(string filename, int image[], int width, int height)
 
     // write header ppm
     f << "P3\r\n" ;
-    f << width << " " <<height <<  "\r\n";
+    f << width << " " << height <<  "\r\n";
     f << "255\r\n";
 
     for(int i = 0; i < height; i++){

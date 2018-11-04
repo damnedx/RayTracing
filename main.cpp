@@ -25,11 +25,18 @@ int main() {
             Vector<float> dirNorm(dir.vx / norm, dir.vy / norm, dir.vz / norm);
             Ray r(origin, dirNorm);
 
-            bool intersection = r.intersectTriangle(sc.allTriangles[0]);
+            for(auto t = sc.allTriangles.begin(); t < sc.allTriangles.end(); t++){
 
-            image[(i * sc.width + j) * 3 + 1] = intersection ? 255 : 0;
-            image[(i * sc.width + j) * 3 + 0] = intersection ? 255 : 0;
-            image[(i * sc.width + j) * 3 + 2] = intersection ? 255 : 0;
+                bool intersection = r.intersectTriangle(*t);
+                if(intersection){
+                    image[(i * sc.width + j) * 3 + 0] = 255;
+                    image[(i * sc.width + j) * 3 + 1] = 255;
+                    image[(i * sc.width + j) * 3 + 2] = 255;
+                }
+
+            }
+
+
         }
     }
     ImageWriter::saveImage("test.ppm", image, sc.width, sc.height);
