@@ -9,6 +9,8 @@
 #include <fstream>
 #include <vector>
 #include "Triangle.h"
+#include "Material.h"
+
 using namespace std;
 // C++ template to print vector container elements
 template <typename T>
@@ -34,6 +36,7 @@ public:
     int height;
     int width;
     vector<Triangle> allTriangles;
+    vector<Material> allMaterials;
 
     SceneReader() = default;
     SceneReader(string filename);

@@ -18,7 +18,9 @@ public:
     Ray(const Point& o, const Vector<float>& dir);
     Point ray_position(float t);
 
-    bool intersectTriangle(Triangle t);
+    bool intersectTriangle(const Triangle& t, Point& pIntersection);
+
+    float lightAtPoint(const Point& p, const Point &pLight);
 
     ~Ray() = default;
 

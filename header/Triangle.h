@@ -10,10 +10,9 @@
 
 class Triangle {
 
-private:
-    unsigned int _materialId;
 public:
     Point p1, p2, p3;
+    unsigned int materialId;
 
     Triangle(const Point& A, const Point& B, const Point& C, unsigned int materialId);
     ~Triangle() = default;

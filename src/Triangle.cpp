@@ -10,5 +10,5 @@ Triangle::Triangle(const Point& A, const Point& B, const Point& C, unsigned int 
     this->p2 = B;
     this->p3 = C;
 
-    this->_materialId = materialId;
+    this->materialId = materialId;
 }

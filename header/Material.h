@@ -6,7 +6,7 @@
 #define RAYTRACING_MATERIAL_H
 
 #include <iostream>
-
+using namespace std;
 class Material {
 public:
 

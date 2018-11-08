@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include "Point.h"
+#include <cmath>
 
 template<typename T>
 class Vector{
@@ -21,6 +22,14 @@ public:
     Vector(Point p1, Point p2);
 
     ~Vector() = default;
+
+    Vector<T> normalizeVector(){
+        float norm = this->getNorm();
+        return Vector<float>(this->vx / norm, this->vy / norm, this->vz / norm);
+    }
+    float getNorm(){
+        return sqrt(this->vx * this->vx + this->vy * this->vy + this->vz * this->vz);
+    }
 
     inline friend std::ostream& operator<<(std::ostream& os, const Vector<T>& v){
         os << "Vector : (x,y,z) = (" << v.vx << "," << v.vy << "," << v.vz << ")";
@@ -78,5 +87,4 @@ template<typename T>
 inline Vector<T> operator^(const Vector<T>& v1, const Vector<T>& v2){
     return Vector<T>(v1.vy * v2.vz - v2.vy*v1.vz, v2.vx*v1.vz - v1.vx*v2.vz, v1.vx*v2.vy - v2.vx*v1.vy);
 }
-
 #endif //RAYTRACING_VECTOR_H

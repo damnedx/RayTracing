@@ -31,7 +31,7 @@ SceneReader::SceneReader(string filename) {
     for(auto i = 0; i < this->_materialSize; i++){
         float r,g,b,reflection;
         fileScene >> r  >> g >> b >> reflection;
-        allMaterials.emplace_back(Material(r,g,b,reflection));
+        this->allMaterials.emplace_back(Material(r,g,b,reflection));
     }
 
     Logger::InfoMessage(to_string(this->_materialSize) + " material(s) loaded");

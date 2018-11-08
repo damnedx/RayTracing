@@ -4,6 +4,7 @@
 #include "header/Ray.h"
 #include "header/ImageWriter.h"
 #include <cmath>
+#include <algorithm>
 
 #define PI 3.14159265
 #define FOV 60
@@ -19,21 +20,20 @@ int main() {
 
     for(int i = 0; i < sc.height; i++){
         for(int j = 0; j < sc.width; j++){
+
             Vector<float> dir(j - sc.width/2, i - sc.height/2, - sc.width/(2*tan(fov/2)));
-
-            float norm = sqrt(dir.vx * dir.vx + dir.vy * dir.vy + dir.vz * dir.vz);
-            Vector<float> dirNorm(dir.vx / norm, dir.vy / norm, dir.vz / norm);
-            Ray r(origin, dirNorm);
-
-            for(auto t = sc.allTriangles.begin(); t < sc.allTriangles.end(); t++){
-
-                bool intersection = r.intersectTriangle(*t);
+            Ray r(origin, dir.normalizeVector());
+            for(auto t = sc.allTriangles.begin() ; t < sc.allTriangles.end(); t++){
+                Point p;
+                bool intersection = r.intersectTriangle(*t, p);
                 if(intersection){
-                    image[(i * sc.width + j) * 3 + 0] = 255;
-                    image[(i * sc.width + j) * 3 + 1] = 255;
-                    image[(i * sc.width + j) * 3 + 2] = 255;
+                    float luminosity = r.lightAtPoint(p, Point(-10,-100,-500));
+                    if(luminosity > 0){
+                        image[(i * sc.width + j) * 3 + 0] = min(255.0f, sc.allMaterials[t->materialId].r * luminosity);
+                        image[(i * sc.width + j) * 3 + 1] = min(255.0f, sc.allMaterials[t->materialId].g * luminosity);
+                        image[(i * sc.width + j) * 3 + 2] = min(255.0f, sc.allMaterials[t->materialId].b * luminosity);
+                    }
                 }
-
             }
 
 

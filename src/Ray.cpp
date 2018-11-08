@@ -3,7 +3,7 @@
 //
 
 #include "../header/Ray.h"
-
+#define INTENSITY 10000
 Ray::Ray(const Point& O, const Vector<float>& dir) {
 
     this->pSource = O;
@@ -16,7 +16,7 @@ Point Ray::ray_position(float t) {
     return this->pSource + Point(proj.vx, proj.vy, proj.vz);
 }
 
-bool Ray::intersectTriangle(Triangle t){
+bool Ray::intersectTriangle(const Triangle& t, Point& pIntersection){
 
     const float EPSILON = 0.0000001;
 
@@ -52,9 +52,19 @@ bool Ray::intersectTriangle(Triangle t){
 
     if (p > EPSILON) // ray intersection
     {
-        //outIntersectionPoint = rayOrigin + rayVector * p;
+        pIntersection = this->ray_position(p);
         return true;
     }
     else // This means that there is a line intersection but not a ray intersection.
         return false;
+}
+
+float Ray::lightAtPoint(const Point &p, const Point &pLight) {
+
+    Vector<float> vOriginTriangle(this->pSource, p);
+    Vector<float> vTriangleLight(p, pLight);
+
+    float angleRayLight = vOriginTriangle.normalizeVector() * vTriangleLight.normalizeVector();
+
+    return (INTENSITY * angleRayLight) / (vTriangleLight.getNorm() * vTriangleLight.getNorm() );
 }
