@@ -20,7 +20,7 @@ public:
 
     bool intersectTriangle(const Triangle& t, Point& pIntersection);
 
-    float lightAtPoint(const Point& p, const Point &pLight);
+    float lightAtPoint(const Point& p, const Point &pLight, const Triangle &t);
 
     ~Ray() = default;
 

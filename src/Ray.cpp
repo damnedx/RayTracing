@@ -3,7 +3,7 @@
 //
 
 #include "../header/Ray.h"
-#define INTENSITY 10000
+#define INTENSITY 100000000000
 Ray::Ray(const Point& O, const Vector<float>& dir) {
 
     this->pSource = O;
@@ -59,12 +59,16 @@ bool Ray::intersectTriangle(const Triangle& t, Point& pIntersection){
         return false;
 }
 
-float Ray::lightAtPoint(const Point &p, const Point &pLight) {
+float Ray::lightAtPoint(const Point &p, const Point &pLight, const Triangle &t) {
 
-    Vector<float> vOriginTriangle(this->pSource, p);
+    Vector<float> v1(t.p2.x - t.p1.x, t.p2.y - t.p1.y, t.p2.z - t.p1.z);
+    Vector<float> v2(t.p3.x - t.p1.x, t.p3.y - t.p1.y, t.p3.z - t.p1.z);
+    Vector<float>vOriginTriangle = v1^v2;
     Vector<float> vTriangleLight(p, pLight);
 
     float angleRayLight = vOriginTriangle.normalizeVector() * vTriangleLight.normalizeVector();
+
+    std::cout << v1 << v2 << vOriginTriangle << " " << vOriginTriangle.normalizeVector() <<  std::endl;
 
     return (INTENSITY * angleRayLight) / (vTriangleLight.getNorm() * vTriangleLight.getNorm() );
 }
