@@ -3,7 +3,7 @@
 //
 
 #include "../header/Ray.h"
-#define INTENSITY 100000000000
+#define INTENSITY 10
 Ray::Ray(const Point& O, const Vector<float>& dir) {
 
     this->pSource = O;
@@ -68,7 +68,5 @@ float Ray::lightAtPoint(const Point &p, const Point &pLight, const Triangle &t) 
 
     float angleRayLight = vOriginTriangle.normalizeVector() * vTriangleLight.normalizeVector();
 
-    std::cout << v1 << v2 << vOriginTriangle << " " << vOriginTriangle.normalizeVector() <<  std::endl;
-
-    return (INTENSITY * angleRayLight) / (vTriangleLight.getNorm() * vTriangleLight.getNorm() );
+    return  (INTENSITY * angleRayLight);
 }
