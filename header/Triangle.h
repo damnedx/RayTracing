@@ -13,8 +13,8 @@ class Triangle {
 public:
     Point p1, p2, p3;
     unsigned int materialId;
-
-    Triangle(const Point& A, const Point& B, const Point& C, unsigned int materialId);
+    unsigned int id;
+    Triangle(const Point& A, const Point& B, const Point& C, unsigned int materialId, unsigned int id);
     ~Triangle() = default;
 
     inline friend std::ostream& operator<<(std::ostream& os, const Triangle& t){

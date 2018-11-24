@@ -10,6 +10,7 @@
 #include <vector>
 #include "Triangle.h"
 #include "Material.h"
+#include "Ray.h"
 
 using namespace std;
 // C++ template to print vector container elements
@@ -42,6 +43,8 @@ public:
     SceneReader(string filename);
     ~SceneReader() = default;
     friend ostream& operator<<(ostream& os, const SceneReader& sr);
+
+    bool computeIntersections(Ray& r , Point &pIntersection, unsigned int &nearestTriangle);
 };
 
 

@@ -3,7 +3,7 @@
 //
 
 #include "../header/Ray.h"
-#define INTENSITY 10
+#define INTENSITY 1
 Ray::Ray(const Point& O, const Vector<float>& dir) {
 
     this->pSource = O;

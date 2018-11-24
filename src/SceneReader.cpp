@@ -55,7 +55,7 @@ SceneReader::SceneReader(string filename) {
                         Point(xA, yA, zA),
                         Point(xB, yB, zB),
                         Point(xC, yC, zC),
-                        materialId));
+                        materialId,i));
 
     }
     Logger::InfoMessage(to_string(this->_triangleSize) + " triangle(s) loaded");
@@ -68,7 +68,25 @@ SceneReader::SceneReader(string filename) {
 
 }
 
+bool SceneReader::computeIntersections(Ray &r, Point &pIntersection, unsigned int &nearestTriangle) {
 
+    bool has_intersection = false;
+
+    Vector<float> minDistanceOriginTriangle(MAXFLOAT, MAXFLOAT, MAXFLOAT);
+
+    for (auto t = this->allTriangles.begin(); t < this->allTriangles.end(); t++) {
+        bool intersection = r.intersectTriangle(*t, pIntersection);
+        if(intersection){
+            has_intersection = true;
+            Vector<float> distanceOriginTriangle(r.pSource, pIntersection);
+            if(distanceOriginTriangle.getNorm() < minDistanceOriginTriangle.getNorm()){
+                minDistanceOriginTriangle = distanceOriginTriangle;
+                nearestTriangle = t->id;
+            }
+        }
+    }
+    return has_intersection;
+}
 
 ostream& operator<<(ostream& os, const SceneReader& dt)
 {
