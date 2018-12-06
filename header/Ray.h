@@ -16,11 +16,15 @@ public:
     Vector<float> dir;
 
     Ray(const Point& o, const Vector<float>& dir);
-    Point ray_position(float t);
+    Point ray_position(float t) const;
 
-    bool intersectTriangle(const Triangle& t, Point& pIntersection);
+    bool intersectTriangle(const Triangle& t, Point& pIntersection) const;
 
-    float lightAtPoint(const Point& p, const Point &pLight, const Triangle &t);
+    float lightAtPoint(const Point& p, const Point &pLight, const Triangle &t) const;
+
+    bool computeIntersections(Ray& r , Point &pIntersection, unsigned int &nearestTriangle) const;
+
+    float computeLuminosityAtPoint(Ray &r, const Point& light, int &nearestTriangle);
 
     ~Ray() = default;
 

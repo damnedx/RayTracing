@@ -24,34 +24,16 @@ int main() {
         for (int j = 0; j < sc.width; j++) {
             Vector<float> dir(j - sc.width / 2, i - sc.height / 2, -sc.width / (2 * tan(fov / 2)));
             Ray r(origin, dir.normalizeVector());
-            Point pIntersection;
+            int idNearestTriangle;
 
-            unsigned int idNearestTriangle;
+            float luminosity = r.computeLuminosityAtPoint(r, light, idNearestTriangle);
 
-            bool intersection = sc.computeIntersections(r, pIntersection, idNearestTriangle);
+            Triangle t = SceneReader::allTriangles[idNearestTriangle];
 
-            if (intersection) {
-                Triangle t = sc.allTriangles[idNearestTriangle];
-                float luminosity = r.lightAtPoint(pIntersection, light, t);
-                Vector<float> v1(t.p1, t.p2);
-                Vector<float> v3(t.p1, t.p3);
-                Vector<float> normal = (v1^v3).normalizeVector();
-                // compute shadows
-                Vector<float> vTriangleLight(pIntersection, light);
-                Ray rayShadow(Point(pIntersection.x + normal.vx,pIntersection.y + normal.vy,pIntersection.z + normal.vz) , vTriangleLight.normalizeVector());
-                Point pIntersectionShadow;
-                unsigned int idNearestTriangleShadow;
-                bool intersection_shadow = sc.computeIntersections(rayShadow, pIntersectionShadow, idNearestTriangleShadow);
-                if(intersection_shadow){
-                    Vector<float> vSourceShadow(pIntersection, pIntersectionShadow);
-                    if(vSourceShadow.getNorm() < vTriangleLight.getNorm())
-                        luminosity = 0;
-                }
-                if(luminosity >= 0){
-                    image[((sc.height - i - 1) * sc.width + j) * 3 + 0] = min(255.0f, sc.allMaterials[t.materialId].r * luminosity);
-                    image[((sc.height - i - 1) * sc.width + j) * 3 + 1] = min(255.0f, sc.allMaterials[t.materialId].g * luminosity);
-                    image[((sc.height - i - 1) * sc.width + j) * 3 + 2] = min(255.0f, sc.allMaterials[t.materialId].b * luminosity);
-                }
+            if(luminosity >= 0){
+                image[((sc.height - i - 1) * sc.width + j) * 3 + 0] = min(255.0f, float(pow(sc.allMaterials[t.materialId].r * luminosity, 1/2.2)));
+                image[((sc.height - i - 1) * sc.width + j) * 3 + 1] = min(255.0f, float(pow(sc.allMaterials[t.materialId].g * luminosity, 1/2.2)));
+                image[((sc.height - i - 1) * sc.width + j) * 3 + 2] = min(255.0f, float(pow(sc.allMaterials[t.materialId].b * luminosity, 1/2.2)));
             }
 
         }

@@ -13,6 +13,9 @@
 #include "../header/Vector.h"
 #include "../header/Ray.h"
 
+vector<Triangle> SceneReader::allTriangles;
+vector<Material> SceneReader::allMaterials;
+
 SceneReader::SceneReader(string filename) {
 
     Logger::InfoMessage("Reading scene file...");
@@ -66,26 +69,6 @@ SceneReader::SceneReader(string filename) {
     Logger::InfoMessage("Scene data loaded!");
     fileScene.close();
 
-}
-
-bool SceneReader::computeIntersections(Ray &r, Point &pIntersection, unsigned int &nearestTriangle) {
-
-    bool has_intersection = false;
-
-    Vector<float> minDistanceOriginTriangle(MAXFLOAT, MAXFLOAT, MAXFLOAT);
-
-    for (auto t = this->allTriangles.begin(); t < this->allTriangles.end(); t++) {
-        bool intersection = r.intersectTriangle(*t, pIntersection);
-        if(intersection){
-            has_intersection = true;
-            Vector<float> distanceOriginTriangle(r.pSource, pIntersection);
-            if(distanceOriginTriangle.getNorm() < minDistanceOriginTriangle.getNorm()){
-                minDistanceOriginTriangle = distanceOriginTriangle;
-                nearestTriangle = t->id;
-            }
-        }
-    }
-    return has_intersection;
 }
 
 ostream& operator<<(ostream& os, const SceneReader& dt)
