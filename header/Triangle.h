@@ -6,15 +6,24 @@
 #define RAYTRACING_TRIANGLE_H
 
 #include "Point.h"
-
+#include "Vector.h"
+#include "Material.h"
 
 class Triangle {
 
 public:
     Point p1, p2, p3;
-    unsigned int materialId;
+
+    Vector<float> normal;
     unsigned int id;
-    Triangle(const Point& A, const Point& B, const Point& C, unsigned int materialId, unsigned int id);
+    unsigned int meshId;
+    Material material;
+    Triangle(const Point& A, const Point& B, const Point& C, unsigned int id);
+
+    void setNormal(double x, double y, double z) {
+        normal = Vector<float>(x,y,z);
+    }
+
     ~Triangle() = default;
 
     inline friend std::ostream& operator<<(std::ostream& os, const Triangle& t){

@@ -13,18 +13,18 @@
 class Ray {
 public:
     Point pSource;
-    Vector<float> dir;
+    Vector<double> dir;
 
-    Ray(const Point& o, const Vector<float>& dir);
-    Point ray_position(float t) const;
+    Ray(const Point& o, const Vector<double>& dir);
+    Point ray_position(double t) const;
 
     bool intersectTriangle(const Triangle& t, Point& pIntersection) const;
 
     float lightAtPoint(const Point& p, const Point &pLight, const Triangle &t) const;
 
-    bool computeIntersections(Ray& r , Point &pIntersection, unsigned int &nearestTriangle) const;
+    bool computeIntersections(Ray& r , Point &pIntersection, int &nearestTriangle) const;
 
-    float computeLuminosityAtPoint(Ray &r, const Point& light, int &nearestTriangle);
+    Vector<double> computeLuminosityAtPoint(Ray &r, const Point& light,const Point& origin, int &nearestTriangle);
 
     ~Ray() = default;
 

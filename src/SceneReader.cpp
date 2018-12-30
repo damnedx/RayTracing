@@ -12,62 +12,60 @@
 #include "../header/Point.h"
 #include "../header/Vector.h"
 #include "../header/Ray.h"
+#include "../header/OBJ_Loader.h"
 
+#define SCALING_FACTOR 1
 vector<Triangle> SceneReader::allTriangles;
 vector<Material> SceneReader::allMaterials;
 
 SceneReader::SceneReader(string filename) {
 
     Logger::InfoMessage("Reading scene file...");
-    ifstream fileScene(filename);
-    if (!fileScene){
-        Logger::ErrorMessage("No file scene found !");
+
+    this->width = 640;
+    this->height = 480;
+
+    vector<Material> allMaterials;
+
+    // Initialize Loader
+    objl::Loader Loader;
+    bool loadout = Loader.LoadFile("../data/scene.obj");
+    if (loadout)
+    {
+        int id = 0;
+        for (int i = 0; i < Loader.LoadedMeshes.size(); i++) {
+            objl::Mesh curMesh = Loader.LoadedMeshes[i];
+            for (int j = 0; j < curMesh.Vertices.size(); j += 3)
+            {
+                Triangle t = Triangle(
+                        Point(curMesh.Vertices[j].Position.X * SCALING_FACTOR,-curMesh.Vertices[j].Position.Z * SCALING_FACTOR,
+                              curMesh.Vertices[j].Position.Y * SCALING_FACTOR),
+                        Point(curMesh.Vertices[j+1].Position.X * SCALING_FACTOR,-curMesh.Vertices[j+1].Position.Z * SCALING_FACTOR,
+                              curMesh.Vertices[j+1].Position.Y * SCALING_FACTOR),
+                        Point(curMesh.Vertices[j+2].Position.X * SCALING_FACTOR,-curMesh.Vertices[j+2].Position.Z * SCALING_FACTOR,
+                              curMesh.Vertices[j+2].Position.Y * SCALING_FACTOR),
+                        id);
+
+                t.setNormal(curMesh.Vertices[j].Normal.X, curMesh.Vertices[j].Normal.Y, curMesh.Vertices[j].Normal.Z);
+                Material m;
+                m.setMaterial(Vector<double>(curMesh.MeshMaterial.Ks.X, curMesh.MeshMaterial.Ks.Y, curMesh.MeshMaterial.Ks.Z),
+                        Vector<double>(curMesh.MeshMaterial.Kd.X,curMesh.MeshMaterial.Kd.Y, curMesh.MeshMaterial.Kd.Z),
+                        Vector<double>(curMesh.MeshMaterial.Ka.X,curMesh.MeshMaterial.Ka.Y, curMesh.MeshMaterial.Ka.Z),
+                        curMesh.MeshMaterial.Ns);
+                t.material = m;
+                t.meshId = i;
+                this->allTriangles.emplace_back(t);
+
+                id = id + 1;
+            }
+        }
+    } else{
+        Logger::ErrorMessage("Cannot load the mesh");
         exit(1);
     }
 
-    // read size
-    fileScene >> this->width >> this->height;
-    fileScene >> this->_materialSize >> this->_triangleSize;
-
-    vector<Material> allMaterials;
-    // materials load
-    for(auto i = 0; i < this->_materialSize; i++){
-        float r,g,b,reflection;
-        fileScene >> r  >> g >> b >> reflection;
-        this->allMaterials.emplace_back(Material(r,g,b,reflection));
-    }
-
-    Logger::InfoMessage(to_string(this->_materialSize) + " material(s) loaded");
-
-    // triangles load
-    for(auto i = 0; i < this->_triangleSize; i++){
-
-        float xA,yA,zA;
-        float xB,yB,zB;
-        float xC,yC,zC;
-        unsigned int materialId;
-
-        fileScene >> xA  >> yA >> zA >>  xB  >> yB >> zB >>  xC  >> yC >> zC >> materialId;
-
-        if(materialId >= this->_materialSize){
-            Logger::ErrorMessage("Material not found for triangle : " + to_string(i));
-            exit(1);
-        }
-        this->allTriangles.emplace_back(
-                Triangle(
-                        Point(xA, yA, zA),
-                        Point(xB, yB, zB),
-                        Point(xC, yC, zC),
-                        materialId,i));
-
-    }
-    Logger::InfoMessage(to_string(this->_triangleSize) + " triangle(s) loaded");
-
-    cout << allMaterials << endl;
-    cout << allTriangles << endl;
-
+    Logger::InfoMessage(to_string(this->allTriangles.size()) + " triangle(s) loaded");
     Logger::InfoMessage("Scene data loaded!");
-    fileScene.close();
 
 }
 

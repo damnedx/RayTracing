@@ -5,16 +5,16 @@
 #include "../header/Ray.h"
 #include "../header/SceneReader.h"
 
-#define INTENSITY 100
-Ray::Ray(const Point& O, const Vector<float>& dir) {
+#define INTENSITY 10000
+Ray::Ray(const Point& O, const Vector<double>& dir) {
 
     this->pSource = O;
     this->dir = dir;
 
 }
 
-Point Ray::ray_position(float t) const {
-    Vector<float> proj = t*this->dir;
+Point Ray::ray_position(double t) const {
+    Vector<double> proj = t * this->dir;
     return this->pSource + Point(proj.vx, proj.vy, proj.vz);
 }
 
@@ -22,29 +22,29 @@ bool Ray::intersectTriangle(const Triangle& t, Point& pIntersection) const {
 
     const float EPSILON = 0.0000001;
 
-    Vector<float> vertex0(t.p1.x, t.p1.y, t.p1.z);
-    Vector<float> vertex1(t.p2.x, t.p2.y, t.p2.z);
-    Vector<float> vertex2(t.p3.x, t.p3.y, t.p3.z);
+    Vector<double> vertex0(t.p1.x, t.p1.y, t.p1.z);
+    Vector<double> vertex1(t.p2.x, t.p2.y, t.p2.z);
+    Vector<double> vertex2(t.p3.x, t.p3.y, t.p3.z);
 
-    float a,f,u,v;
+    double a,f,u,v;
 
-    Vector<float> edge1 = vertex1 - vertex0;
-    Vector<float> edge2 = vertex2 - vertex0;
+    Vector<double> edge1 = vertex1 - vertex0;
+    Vector<double> edge2 = vertex2 - vertex0;
 
-    Vector<float>h = this->dir^edge2;
+    Vector<double>h = this->dir^edge2;
 
     a = edge1*h;
     if (a > -EPSILON && a < EPSILON)
         return false;    // This ray is parallel to this triangle.
     f = 1.0/a;
 
-    Vector<float> s = Vector<float>(this->pSource.x, this->pSource.y, this->pSource.z) - vertex0;
+    Vector<double> s = Vector<double>(this->pSource.x, this->pSource.y, this->pSource.z) - vertex0;
 
     u = f * (s*h);
     if (u < 0.0 || u > 1.0)
         return false;
 
-    Vector<float> q = s ^ edge1;
+    Vector<double> q = s ^ edge1;
 
     v = f * this->dir * q;
     if (v < 0.0 || u + v > 1.0)
@@ -63,16 +63,16 @@ bool Ray::intersectTriangle(const Triangle& t, Point& pIntersection) const {
 
 float Ray::lightAtPoint(const Point &p, const Point &pLight, const Triangle &t) const {
 
-    Vector<float> v1(t.p2.x - t.p1.x, t.p2.y - t.p1.y, t.p2.z - t.p1.z);
-    Vector<float> v2(t.p3.x - t.p1.x, t.p3.y - t.p1.y, t.p3.z - t.p1.z);
-    Vector<float>vOriginTriangle = v1^v2;
+    Vector<float> v1(t.p1, t.p2);
+    Vector<float> v2(t.p1, t.p3);
+    Vector<float>N = (v1^v2);
     Vector<float> vTriangleLight(p, pLight);
 
-    float angleRayLight = vOriginTriangle.normalizeVector() * vTriangleLight.normalizeVector();
+    float angleRayLight = N.normalizeVector() * vTriangleLight.normalizeVector();
 
     return  (INTENSITY * angleRayLight);
 }
-bool Ray::computeIntersections(Ray &r, Point &pIntersection, unsigned int &nearestTriangle) const {
+bool Ray::computeIntersections(Ray &r, Point &pIntersection, int &nearestTriangle) const {
 
     bool has_intersection = false;
 
@@ -92,32 +92,56 @@ bool Ray::computeIntersections(Ray &r, Point &pIntersection, unsigned int &neare
     return has_intersection;
 }
 
-float Ray::computeLuminosityAtPoint(Ray &r, const Point& light, int &nearestTriangle) {
+Vector<double> Ray::computeLuminosityAtPoint(Ray &r, const Point& light,const Point& origin, int &nearestTriangle) {
 
     Point pIntersection;
-    unsigned int idNearestTriangle;
-    float luminosity = 0;
+    int idNearestTriangle = -1;
+    Vector<double> lDiffuse(0,0,0);
+    Vector<double> lAmbient(0,0,0);
+    Vector<double> lSpeculaire(0,0,0);
 
+    // compute diffuse light
     bool intersection = r.computeIntersections(r, pIntersection, idNearestTriangle);
     nearestTriangle = idNearestTriangle;
     if (intersection) {
-        Triangle t = SceneReader::allTriangles[idNearestTriangle];
-        luminosity = r.lightAtPoint(pIntersection, light, t);
-        Vector<float> v1(t.p1, t.p2);
-        Vector<float> v3(t.p1, t.p3);
-        Vector<float> normal = (v1^v3).normalizeVector();
+        Triangle nearestTriangle = SceneReader::allTriangles[idNearestTriangle];
+        double coeff = r.lightAtPoint(pIntersection, light, nearestTriangle);
+        Material mat = nearestTriangle.material;
+        lDiffuse = mat.kd % (coeff * mat.color);
+
+
+        Vector<double> v1(nearestTriangle.p1, nearestTriangle.p2);
+        Vector<double> v3(nearestTriangle.p1, nearestTriangle.p3);
+        Vector<double> N = (v1^v3).normalizeVector();
+        Vector<double> L(pIntersection, light);
+
+        // ambient light :
+        lAmbient = mat.color % mat.ka;
+
+        // specular light
+        Vector<double>V(pIntersection, origin);
+        Vector<double> R = (N *((N * L.normalizeVector()) * 2) ) - L.normalizeVector();
+        lSpeculaire = mat.ks % mat.color * pow((R.normalizeVector() * V.normalizeVector()), mat.ns);
+
+
         // compute shadows
-        Vector<float> vTriangleLight(pIntersection, light);
-        Ray rayShadow(Point(pIntersection.x + normal.vx,pIntersection.y + normal.vy,pIntersection.z + normal.vz) , vTriangleLight.normalizeVector());
+        Ray rayShadow(pIntersection + Point(0.01*N.vx, 0.01*N.vy, 0.01*N.vz), L.normalizeVector());
         Point pIntersectionShadow;
-        unsigned int idNearestTriangleShadow;
+        int idNearestTriangleShadow = -1;
         bool intersection_shadow = r.computeIntersections(rayShadow, pIntersectionShadow, idNearestTriangleShadow);
-        if(intersection_shadow){
-            Vector<float> vSourceShadow(pIntersection, pIntersectionShadow);
-            if(vSourceShadow.getNorm() < vTriangleLight.getNorm())
-                luminosity = 0;
+        Triangle nearestTriangleShadow = SceneReader::allTriangles[idNearestTriangleShadow];
+        if(intersection_shadow && nearestTriangle.meshId != nearestTriangleShadow.meshId) {
+            Vector<double> vSourceShadow(pIntersection, pIntersectionShadow);
+            if (vSourceShadow.getNorm() < L.getNorm()) {
+                lDiffuse = Vector<double>(0, 0, 0);
+                lAmbient = Vector<double>(0, 0, 0);
+                lSpeculaire = Vector<double>(0, 0, 0);
+            }
         }
 
     }
-    return luminosity;
+    if(lDiffuse.vx < 0 || lDiffuse.vy < 0 || lDiffuse.vz < 0)
+        return Vector<double>(0,0,0);
+
+    return lDiffuse;
 }

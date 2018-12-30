@@ -11,12 +11,12 @@
 class Point{
 
 public:
-    float x;
-    float y;
-    float z;
+    double x;
+    double y;
+    double z;
 
     Point() = default;
-    Point(float x, float y, float z);
+    Point(double x, double y, double z);
     ~Point() = default;
 
     inline friend std::ostream& operator<<(std::ostream& os, const Point& p){
@@ -30,4 +30,17 @@ public:
 inline Point operator+(const Point& p1, const Point& p2){
     return Point(p1.x + p2.x, p1.y + p2.y, p1.z + p2.z);
 }
+inline Point operator*(const Point& p1, const Point& p2){
+    return Point(p1.x * p2.x, p1.y * p2.y, p1.z * p2.z);
+}
+inline Point operator-(const Point& p1, const Point& p2){
+    return Point(p1.x - p2.x, p1.y - p2.y, p1.z - p2.z);
+}
+inline bool operator==(const Point& p1, const Point& p2){
+    return (p1.x == p2.x &&  p1.y == p2.y && p1.z == p2.z);
+}
+inline bool operator!=(const Point& p1, const Point& p2){
+    return (p1.x != p2.x ||  p1.y!= p2.y || p1.z != p2.z);
+}
+
 #endif //RAYTRACING_POINT_H

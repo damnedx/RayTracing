@@ -25,10 +25,14 @@ public:
 
     Vector<T> normalizeVector(){
         float norm = this->getNorm();
-        return Vector<float>(this->vx / norm, this->vy / norm, this->vz / norm);
+        return Vector<T>(this->vx / norm, this->vy / norm, this->vz / norm);
     }
     float getNorm(){
         return sqrt(this->vx * this->vx + this->vy * this->vy + this->vz * this->vz);
+    }
+
+    float getNorm2(){
+        return this->vx * this->vx + this->vy * this->vy + this->vz * this->vz;
     }
 
     inline friend std::ostream& operator<<(std::ostream& os, const Vector<T>& v){
@@ -58,6 +62,11 @@ inline Vector<T> operator*(const Vector<T>& v, const T& value){
 template<typename T>
 inline Vector<T> operator*(const T& value, const Vector<T>& v){
     return Vector<T>(v.vx * value, v.vy * value, v.vz * value);
+}
+
+template<typename T>
+inline Vector<T> operator%(const Vector<T>& v1, const Vector<T>& v2){
+    return Vector<T>(v1.vx * v2.vx, v1.vy * v2.vy, v1.vz * v2.vz);
 }
 
 // dot product
