@@ -23,7 +23,7 @@ int main() {
 
     int *image = new int[sc.height * sc.width * 3];
 
-    Point light(10,0, 20);
+    Point light(0,0, 20);
 
 
 #pragma omp parallel for

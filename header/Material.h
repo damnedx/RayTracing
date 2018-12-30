@@ -14,11 +14,9 @@ public:
     float reflection;
     float ns;
     Vector<double> ks, kd, ka;
-    Vector<double> color;
 
     Material() = default;
     Material(float r, float g, float b, float reflection) {
-        this->color = Vector<double>(r,g,b);
         this->reflection = reflection;
         this->ns = 0;
     };
@@ -30,13 +28,8 @@ public:
         this->ka = ka;
         this->ns = ns;
 
-        this->color = Vector<double>(1,1,1);
     }
 
-    inline friend ostream& operator<<(ostream& os, const Material& m){
-        os << "Material : (R,G,B) = (" << m.color << ") Reflection : " << m.reflection;
-        return os;
-    }
 
 };
 

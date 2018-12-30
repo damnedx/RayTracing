@@ -107,7 +107,7 @@ Vector<double> Ray::computeLuminosityAtPoint(Ray &r, const Point& light,const Po
         Triangle nearestTriangle = SceneReader::allTriangles[idNearestTriangle];
         double coeff = r.lightAtPoint(pIntersection, light, nearestTriangle);
         Material mat = nearestTriangle.material;
-        lDiffuse = mat.kd % (coeff * mat.color);
+        lDiffuse = mat.kd * coeff;
 
 
         Vector<double> v1(nearestTriangle.p1, nearestTriangle.p2);
@@ -116,12 +116,12 @@ Vector<double> Ray::computeLuminosityAtPoint(Ray &r, const Point& light,const Po
         Vector<double> L(pIntersection, light);
 
         // ambient light :
-        lAmbient = mat.color % mat.ka;
+        lAmbient = double(INTENSITY) * mat.ka;
 
         // specular light
         Vector<double>V(pIntersection, origin);
         Vector<double> R = (N *((N * L.normalizeVector()) * 2) ) - L.normalizeVector();
-        lSpeculaire = mat.ks % mat.color * pow((R.normalizeVector() * V.normalizeVector()), mat.ns);
+        lSpeculaire = mat.ks * double(INTENSITY) * pow(max(0.,R * V.normalizeVector()), mat.ns);
 
 
         // compute shadows
@@ -143,5 +143,5 @@ Vector<double> Ray::computeLuminosityAtPoint(Ray &r, const Point& light,const Po
     if(lDiffuse.vx < 0 || lDiffuse.vy < 0 || lDiffuse.vz < 0)
         return Vector<double>(0,0,0);
 
-    return lDiffuse;
+    return lDiffuse + lAmbient + lSpeculaire;
 }
