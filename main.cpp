@@ -54,6 +54,7 @@ int main() {
 
     auto duration = duration_cast<seconds>( t2 - t1 ).count();
     cout << "Total time : " << duration << " s" << endl;
+    cout << "Total ray intersections computations : " << Ray::compute_intersection_1 + Ray::compute_intersection_2 << endl;
 
     ImageWriter::saveImage("test.ppm", image, sc.width, sc.height);
     delete[] image;

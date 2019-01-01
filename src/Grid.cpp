@@ -26,11 +26,9 @@ Grid::Grid(const vector<Triangle>& mesh) {
 
     double coeff_grid = powf(((LAMBDA * totalTriangles)/(size.vx * size.vy *size.vz)), 1/3.);
 
-    this->gridResolution = Vector<int>(4,4,1);
+    this->gridResolution = Vector<int>(size.vx * coeff_grid,size.vy * coeff_grid,1);
 
     this->cellDimension = size / Vector<double>(this->gridResolution.vx,this->gridResolution.vy,this->gridResolution.vz);
-
-    cout << cellDimension << endl;
 
     // insert triangles inside the grid
     this->fillGrid(mesh);
@@ -94,10 +92,10 @@ vector<Triangle> Grid::getTrianglesDDA(Ray r){
 
     Vector<double> exit, step, cell;
     Vector<double> deltaT, nextCrossingT;
-    for (uint8_t i = 0; i < 3; ++i) {
+    for (int i = 0; i < 3; ++i) {
         // convert ray starting point to cell coordinates
         float rayOrigCell = ((r.pSource[i] + r.dir[i] * tHitBox) -  bbox[0][i]);
-        cell[i] = clamp<uint32_t>(std::floor(rayOrigCell / cellDimension[i]), 0, gridResolution[i] - 1);
+        cell[i] = clamp<int>(std::floor(rayOrigCell / cellDimension[i]), 0, gridResolution[i] - 1);
         if (r.dir[i] < 0) {
             deltaT[i] = -cellDimension[i] * invDir[i];
             nextCrossingT[i] = tHitBox + (cell[i] * cellDimension[i] - rayOrigCell) * invDir[i];

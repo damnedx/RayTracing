@@ -17,6 +17,10 @@ public:
     Point pSource;
     Vector<double> dir;
 
+    // just to compare w/o grid
+    static int compute_intersection_1;
+    static int compute_intersection_2;
+
     Ray(const Point& o, const Vector<double>& dir);
     Point ray_position(double t) const;
 

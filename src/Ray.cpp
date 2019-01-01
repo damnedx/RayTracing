@@ -7,9 +7,9 @@
 #include "../header/Grid.h"
 
 #define INTENSITY 10000
+int Ray::compute_intersection_1;
+int Ray::compute_intersection_2;
 
-static int compute_intersection_1 = 0;
-static int compute_intersection_2 = 0;
 Ray::Ray(const Point& O, const Vector<double>& dir) {
 
     this->pSource = O;
