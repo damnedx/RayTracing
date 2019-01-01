@@ -38,11 +38,11 @@ SceneReader::SceneReader(string filename) {
             for (int j = 0; j < curMesh.Vertices.size(); j += 3)
             {
                 Triangle t = Triangle(
-                        Point(curMesh.Vertices[j].Position.X * SCALING_FACTOR,curMesh.Vertices[j].Position.Z * SCALING_FACTOR,
+                        Point(curMesh.Vertices[j].Position.X * SCALING_FACTOR,-curMesh.Vertices[j].Position.Z * SCALING_FACTOR,
                               curMesh.Vertices[j].Position.Y * SCALING_FACTOR),
-                        Point(curMesh.Vertices[j+1].Position.X * SCALING_FACTOR,curMesh.Vertices[j+1].Position.Z * SCALING_FACTOR,
+                        Point(curMesh.Vertices[j+1].Position.X * SCALING_FACTOR,-curMesh.Vertices[j+1].Position.Z * SCALING_FACTOR,
                               curMesh.Vertices[j+1].Position.Y * SCALING_FACTOR),
-                        Point(curMesh.Vertices[j+2].Position.X * SCALING_FACTOR,curMesh.Vertices[j+2].Position.Z * SCALING_FACTOR,
+                        Point(curMesh.Vertices[j+2].Position.X * SCALING_FACTOR,-curMesh.Vertices[j+2].Position.Z * SCALING_FACTOR,
                               curMesh.Vertices[j+2].Position.Y * SCALING_FACTOR),
                         id);
 

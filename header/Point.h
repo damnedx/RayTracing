@@ -25,6 +25,16 @@ public:
         return std::tie(x, y, z) < std::tie(p2.x, p2.y, p2.z);
     }
 
+    double operator[] (int i) {
+        if(i == 0)
+            return x;
+        if(i==1)
+            return y;
+        if(i==2)
+            return z;
+    }
+
+
     inline friend std::ostream& operator<<(std::ostream& os, const Point& p){
         os << "Point : (x,y,z) = (" << p.x << "," <<p.y << "," << p.z << ")";
         return os;

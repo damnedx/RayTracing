@@ -34,6 +34,14 @@ public:
     float getNorm2(){
         return this->vx * this->vx + this->vy * this->vy + this->vz * this->vz;
     }
+    T& operator[] (int i) {
+        if(i == 0)
+            return vx;
+        if(i==1)
+            return vy;
+        if(i==2)
+            return vz;
+    }
 
     inline friend std::ostream& operator<<(std::ostream& os, const Vector<T>& v){
         os << "Vector : (x,y,z) = (" << v.vx << "," << v.vy << "," << v.vz << ")";
@@ -73,6 +81,14 @@ inline Vector<T> operator%(const Vector<T>& v1, const Vector<T>& v2){
 template<typename T>
 inline T operator*(const Vector<T>& v1, const Vector<T>& v2){
     return v1.vx * v2.vx + v1.vy * v2.vy + v1.vz * v2.vz;
+}
+template<typename T>
+inline Vector<T> operator/(const T &v, const Vector<T>& v2){
+    return Vector<T>(v / v2.vx, v / v2.vy, v / v2.vz);
+}
+template<typename T>
+inline Vector<T> operator/(const Vector<T>& v, const T &t){
+    return Vector<T>(v.vx / t, v.vy / t , v.vz/ t);
 }
 template<typename T>
 inline Vector<T> operator/(const Vector<T>& v1, const Vector<T>& v2){

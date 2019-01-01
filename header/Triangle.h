@@ -12,6 +12,12 @@
 struct Bbox{
     Point min;
     Point max;
+    Point& operator[] (int i) {
+        if(i == 0)
+            return min;
+        if(i==1)
+            return max;
+    }
 };
 class Triangle {
 

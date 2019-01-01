@@ -11,19 +11,23 @@
 #include <list>
 #include "Vector.h"
 #include "Triangle.h"
+#include "Ray.h"
+
 
 class Grid {
 public:
     // grid resolution
-    Vector<int> gridResolution;
-    Vector<double> cellDimension;
+    static Vector<int> gridResolution;
+    static Vector<double> cellDimension;
+    static Bbox bbox;
 
-    map<Point, list<Triangle>> voxelTriangles;
+    static map<Point, vector<Triangle>> voxelTriangles;
 
     Grid() = default;
     Grid(const vector<Triangle>& mesh);
     Bbox getSceneBoudingBox(const vector<Triangle>& mesh) const;
     void fillGrid(const vector<Triangle>& mesh);
+    static vector<Triangle> getTrianglesDDA(Ray r);
     ~Grid() = default;
 
 
