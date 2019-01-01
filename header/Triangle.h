@@ -9,10 +9,16 @@
 #include "Vector.h"
 #include "Material.h"
 
+struct Bbox{
+    Point min;
+    Point max;
+};
 class Triangle {
 
 public:
     Point p1, p2, p3;
+
+    Vector<Point>pointVector;
 
     Vector<float> normal;
     unsigned int id;
@@ -23,7 +29,7 @@ public:
     void setNormal(double x, double y, double z) {
         normal = Vector<float>(x,y,z);
     }
-
+    Bbox getBoundingBox() const;
     ~Triangle() = default;
 
     inline friend std::ostream& operator<<(std::ostream& os, const Triangle& t){

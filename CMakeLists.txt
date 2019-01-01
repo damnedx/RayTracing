@@ -9,4 +9,4 @@ if (OPENMP_FOUND)
     set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
 endif()
 
-add_executable(RayTracing main.cpp header/ImageWriter.h header/Point.h header/Vector.h src/SceneReader.cpp header/SceneReader.h src/Logger.cpp header/Logger.h header/Material.h src/Triangle.cpp header/Triangle.h src/Point.cpp src/Ray.cpp header/Ray.h src/ImageWriter.cpp)
+add_executable(RayTracing main.cpp header/ImageWriter.h header/Point.h header/Vector.h src/SceneReader.cpp header/SceneReader.h src/Logger.cpp header/Logger.h header/Material.h src/Triangle.cpp header/Triangle.h src/Point.cpp src/Ray.cpp header/Ray.h src/ImageWriter.cpp src/Grid.cpp header/Grid.h)

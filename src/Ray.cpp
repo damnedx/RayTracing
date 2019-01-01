@@ -78,14 +78,14 @@ bool Ray::computeIntersections(Ray &r, Point &pIntersection, int &nearestTriangl
 
     Vector<float> minDistanceOriginTriangle(MAXFLOAT, MAXFLOAT, MAXFLOAT);
 
-    for (auto t = SceneReader::allTriangles.begin(); t < SceneReader::allTriangles.end(); t++) {
-        bool intersection = r.intersectTriangle(*t, pIntersection);
+    for (auto& t : SceneReader::allTriangles) {
+        bool intersection = r.intersectTriangle(t, pIntersection);
         if(intersection){
             has_intersection = true;
             Vector<float> distanceOriginTriangle(r.pSource, pIntersection);
             if(distanceOriginTriangle.getNorm() < minDistanceOriginTriangle.getNorm()){
                 minDistanceOriginTriangle = distanceOriginTriangle;
-                nearestTriangle = t->id;
+                nearestTriangle = t.id;
             }
         }
     }

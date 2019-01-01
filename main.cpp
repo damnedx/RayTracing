@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <omp.h>
 #include <chrono>
+#include "header/Grid.h"
 
 using namespace std::chrono;
 
@@ -23,9 +24,11 @@ int main() {
 
     int *image = new int[sc.height * sc.width * 3];
 
-    Point light(0,0, 20);
+    Point light(10,0, 20);
 
-
+    // init Grid
+    Grid g(SceneReader::allTriangles);
+/*
 #pragma omp parallel for
     for (int i = 0; i < sc.height; i++) {
         for (int j = 0; j < sc.width; j++) {
@@ -50,7 +53,7 @@ int main() {
     auto duration = duration_cast<seconds>( t2 - t1 ).count();
     cout << "Total time : " << duration << " s" << endl;
 
-    ImageWriter::saveImage("test.ppm", image, sc.width, sc.height);
+    ImageWriter::saveImage("test.ppm", image, sc.width, sc.height);*/
     delete[] image;
 
 
