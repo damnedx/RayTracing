@@ -6,7 +6,7 @@
 #include "../header/Ray.h"
 #include "../header/SceneReader.h"
 
-#define LAMBDA 3
+#define LAMBDA 5
 
 map<Point, vector<Triangle>> Grid::voxelTriangles;
 
@@ -26,9 +26,10 @@ Grid::Grid(const vector<Triangle>& mesh) {
 
     double coeff_grid = powf(((LAMBDA * totalTriangles)/(size.vx * size.vy *size.vz)), 1/3.);
 
-    this->gridResolution = Vector<int>(size.vx * coeff_grid,size.vy * coeff_grid,1);
+    this->gridResolution = Vector<int>(size.vx * coeff_grid, size.vy * coeff_grid, 1);
 
     this->cellDimension = size / Vector<double>(this->gridResolution.vx,this->gridResolution.vy,this->gridResolution.vz);
+
 
     // insert triangles inside the grid
     this->fillGrid(mesh);

@@ -37,6 +37,8 @@ public:
 
     Vector<double> computeLuminosityAtPoint(Ray &r, const Point& light,const Point& origin, int &nearestTriangle);
 
+    static vector<Point> generate_stochastic_sampling(int size_kernel);
+
     ~Ray() = default;
 
     inline friend std::ostream& operator<<(std::ostream& os, const Ray& r){

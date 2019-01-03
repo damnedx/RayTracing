@@ -209,3 +209,20 @@ Vector<double> Ray::computeLuminosityAtPoint(Ray &r, const Point& light,const Po
 
     return lDiffuse + lAmbient + lSpeculaire;
 }
+
+vector<Point> Ray::generate_stochastic_sampling(int n)
+{
+    vector<Point> sampling_points;
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < n; j++){
+
+            float x = ( i + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX)) ) / n;
+            float y = ( j + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX)) ) / n;
+
+            Point p(x,y,0);
+            sampling_points.emplace_back(p);
+
+        }
+    }
+    return sampling_points;
+}
