@@ -1,2 +1,2 @@
 # RayTracing
-Raytracing developed in C++
+Raytracer developed in C++
